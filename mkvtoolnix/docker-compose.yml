@@ -1,0 +1,26 @@
+---
+version: "3.8"
+
+services:
+  mkvtoolnix:
+    image: jlesage/mkvtoolnix:latest
+    container_name: mkvtoolnix
+    hostname: mkvtoolnix
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 5800:5800
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/mkvtoolnix/config:/config:rw \
+      - /share/CACHEDEV1_DATA/data/media:/storage:rw \
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
