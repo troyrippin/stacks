@@ -1,0 +1,28 @@
+---
+version: "3.8"
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 3001:3001
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/uptime-kuma/config:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
