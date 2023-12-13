@@ -1,0 +1,26 @@
+---
+version: "3.8"
+
+services:
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    hostname: bazarr
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 6767:6767
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/bazarr/config:/config
+      - /share/CACHEDEV1_DATA/data/:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
