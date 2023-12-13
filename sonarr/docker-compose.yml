@@ -1,0 +1,26 @@
+---
+version: "3.8"
+
+services:
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    hostname: sonarr
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 8989:8989
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/sonarr/config:/config
+      - /share/CACHEDEV1_DATA/data/:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
