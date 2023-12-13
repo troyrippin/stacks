@@ -1,0 +1,30 @@
+---
+version: "3.8"
+
+services:
+ grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    user: 1000:1000
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+    ports:
+      - 3000:3000
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/grafana/config:/var/lib/grafana
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
