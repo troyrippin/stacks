@@ -1,0 +1,32 @@
+---
+version: "3.8"
+
+services:
+  filebrowser:
+    image: hurlenko/filebrowser:latest
+    container_name: filebrowser
+    hostname: filebrowser
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 6060:8080
+    volumes:
+      - /:/data
+      - /share/CACHEDEV1_DATA/Container/filebrowser/config/filebrowser.db:/config/filebrowser.db
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
