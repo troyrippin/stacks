@@ -24,7 +24,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - db:/var/lib/mysql
+      - /share/CACHEDEV1_DATA/Container/nextcloud/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
       - nextcloud_network
@@ -41,7 +41,7 @@ services:
     env_file:
       - .env
     environment:
-      - TZ=Europe/Stockholm
+      - TZ=${TZ}
       - MYSQL_HOST=${MYSQL_HOST}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -49,7 +49,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - nextcloud:/var/www/html
+      - /share/CACHEDEV1_DATA/Container/nextcloud/config:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       nextcloud_mariadb:
@@ -58,10 +58,6 @@ services:
       - nextcloud_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-volumes:
-  nextcloud:
-  db:
 
 networks:
   nextcloud_network:

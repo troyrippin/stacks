@@ -4,21 +4,23 @@ version: "3.8"
 services:
   postgresql:
     image: postgres:12-alpine
-    hostname: postgresql
     container_name: postgresql
+    hostname: postgresql
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=${PG_PASS:?database password required}
+      - POSTGRES_USER=${PG_USER:-authentik}
+      - POSTGRES_DB=${PG_DB:-authentik}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
       interval: 30s
       retries: 5
       timeout: 5s
-    environment:
-      POSTGRES_PASSWORD: ${PG_PASS:?database password required}
-      POSTGRES_USER: ${PG_USER:-authentik}
-      POSTGRES_DB: ${PG_DB:-authentik}
-    env_file:
-      - .env
     volumes:
       - /share/CACHEDEV1_DATA/Container/authentik/postgresql:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -29,9 +31,11 @@ services:
 
   redis:
     image: redis:alpine
-    hostname: redis
     container_name: redis
+    hostname: redis
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     command: --save 60 1 --loglevel warning
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
@@ -49,16 +53,20 @@ services:
 
   server:
     image: ghcr.io/goauthentik/server:latest
-    hostname: authentik_server
     container_name: authentik_server
+    hostname: authentik_server
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     command: server
+    env_file:
+      - .env
     environment:
-      AUTHENTIK_REDIS__HOST: redis
-      AUTHENTIK_POSTGRESQL__HOST: postgresql
-      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      - AUTHENTIK_REDIS__HOST=redis
+      - AUTHENTIK_POSTGRESQL__HOST=postgresql
+      - AUTHENTIK_POSTGRESQL__USER=${PG_USER:-authentik}
+      - AUTHENTIK_POSTGRESQL__NAME=${PG_DB:-authentik}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${PG_PASS}
     ports:
       - "${COMPOSE_PORT_HTTP:-9000}:9000"
       - "${COMPOSE_PORT_HTTPS:-9443}:9443"
@@ -66,8 +74,6 @@ services:
       - /share/CACHEDEV1_DATA/Container/authentik/media:/media
       - /share/CACHEDEV1_DATA/Container/authentik/custom-templates:/templates
       - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
     depends_on:
       - postgresql
       - redis
@@ -78,16 +84,20 @@ services:
 
   worker:
     image: ghcr.io/goauthentik/server:latest
-    hostname: authentik_worker
     container_name: authentik_worker
+    hostname: authentik_worker
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     command: worker
+    env_file:
+      - .env
     environment:
-      AUTHENTIK_REDIS__HOST: redis
-      AUTHENTIK_POSTGRESQL__HOST: postgresql
-      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      - AUTHENTIK_REDIS__HOST=redis
+      - AUTHENTIK_POSTGRESQL__HOST=postgresql
+      - AUTHENTIK_POSTGRESQL__USER=${PG_USER:-authentik}
+      - AUTHENTIK_POSTGRESQL__NAME=${PG_DB:-authentik}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${PG_PASS}
     # `user: root` and the docker socket volume are optional.
     # See more for the docker socket integration here:
     # https://goauthentik.io/docs/outposts/integrations/docker
@@ -95,8 +105,6 @@ services:
     # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
     # (1000:1000 by default)
     user: root
-    env_file:
-      - .env
     volumes:
       - /share/CACHEDEV1_DATA/Container/authentik/media:/media
       - /share/CACHEDEV1_DATA/Container/authentik/certs:/certs
