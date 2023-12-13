@@ -1,0 +1,32 @@
+---
+version: "3.8"
+
+services:
+  freshrss:
+    image: freshrss/freshrss:latest
+    container_name: freshrss
+    hostname: freshrss
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 4444:80
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/freshrss/config:/var/www/FreshRSS/data
+      - /share/CACHEDEV1_DATA/Container/freshrss/extensions:/var/www/FreshRSS/extensions
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
