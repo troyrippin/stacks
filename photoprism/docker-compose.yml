@@ -1,0 +1,67 @@
+---
+version: "3.8"
+
+services:
+    photoprism-mariadb:
+    image: mariadb:latest
+    container_name: photoprism-mariadb
+    hostname: photoprism-mariadb
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/photoprism/database:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  photoprism:
+    image: photoprism/photoprism:latest
+    container_name: photoprism
+    hostname: photoprism
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - /share/CACHEDEV1_DATA/Container/stacks/photoprism/.env
+    environment:
+      - TZ=${TZ}
+      - PHOTOPRISM_HTTP_PORT=${PHOTOPRISM_HTTP_PORT}
+      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
+      - PHOTOPRISM_DATABASE_DRIVER=${PHOTOPRISM_DATABASE_DRIVER}
+      - PHOTOPRISM_DATABASE_SERVER=${PHOTOPRISM_DATABASE_SERVER}
+      - PHOTOPRISM_DATABASE_NAME=${PHOTOPRISM_DATABASE_NAME}
+      - PHOTOPRISM_DATABASE_USER=${PHOTOPRISM_DATABASE_USER}
+      - PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      - PHOTOPRISM_SITE_URL=${PHOTOPRISM_SITE_URL}
+      - PHOTOPRISM_SITE_TITLE=${PHOTOPRISM_SITE_TITLE}
+    ports:
+      - 2342:2342
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/photoprism/import:/photoprism/import
+      - /share/CACHEDEV1_DATA/Container/photoprism/storage:/photoprism/storage
+      - /share/data/media/photos:/photoprism/originals
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - photoprism-mariadb
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
