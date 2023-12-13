@@ -1,0 +1,26 @@
+---
+version: "3.8"
+
+services:
+ influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    hostname: influxdb
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 8086:8086
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/influxdb/config:/etc/influxdb2
+      - /share/CACHEDEV1_DATA/Container/influxdb/data:/var/lib/influxdb2
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
