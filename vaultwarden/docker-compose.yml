@@ -1,0 +1,36 @@
+---
+version: "3.8"
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    hostname: vaultwarden
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    user: 1000:1000
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - DOMAIN=${DOMAIN}
+      - EMERGENCY_ACCESS_ALLOWED=${EMERGENCY_ACCESS_ALLOWED}
+      - INVITATIONS_ALLOWED=${INVITATIONS_ALLOWED}
+      - SIGNUPS_ALLOWED=${SIGNUPS_ALLOWED}
+      - WEB_VAULT_ENABLED=${WEB_VAULT_ENABLED}
+    ports:
+      - 9445:80
+      - 3012:3012
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/vaultwarden/config:/data
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
