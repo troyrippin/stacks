@@ -1,0 +1,32 @@
+---
+version: "3.8"
+
+services:
+ phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    hostname: phpmyadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PMA_HOST=${PMA_HOST}
+      - PMA_PORT=${PMA_PORT}
+    ports:
+      - 8182:80
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+      - /share/CACHEDEV1_DATA/Container/phpmyadmin/sessions:/sessions
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
