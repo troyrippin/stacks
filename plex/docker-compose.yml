@@ -1,0 +1,29 @@
+---
+version: "3.8"
+
+services:
+  plex:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    hostname: plex
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=${VERSION}
+      # - PLEX_CLAIM=${PLEX_CLAIM}
+    ports:
+      - 32400:32400
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/plex/config:/config
+      - /share/CACHEDEV1_DATA/Container/plex/transcode:/transcode
+      - /share/CACHEDEV1_DATA/data/media:/data/media
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
