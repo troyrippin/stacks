@@ -1,0 +1,33 @@
+---
+version: "3.8"
+
+services:
+  nginx_proxy_manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx_proxy_manager
+    hostname: nginx_proxy_manager
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - DB_SQLITE_FILE=${DB_SQLITE_FILE}
+    ports:
+      - 4480:80
+      - 4443:443
+      - 4481:81
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/nginx-proxy-manager/config/data:/data
+      - /share/CACHEDEV1_DATA/Container/nginx-proxy-manager/config/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
