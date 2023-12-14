@@ -17,6 +17,12 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: "healthcheck.sh --connect"
+      start_period: 1m
+      interval: 30s
+      timeout: 10s
+      retries: 5
     volumes:
       - /share/CACHEDEV1_DATA/Container/photoprism/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
@@ -53,7 +59,8 @@ services:
       - /share/data/media/photos:/photoprism/originals
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      - photoprism-mariadb
+      photoprism-mariadb:
+        condition: service_healthy
     networks:
       - proxy_network
     labels:
