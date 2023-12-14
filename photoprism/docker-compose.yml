@@ -2,7 +2,7 @@
 version: "3.8"
 
 services:
-    photoprism-mariadb:
+  photoprism-mariadb:
     image: mariadb:latest
     container_name: photoprism-mariadb
     hostname: photoprism-mariadb

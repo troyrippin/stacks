@@ -16,7 +16,7 @@ services:
       - MYSQL_PASSWORD_FILE=/run/secrets/ghost_password
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/ghost_admin_password
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      test: "healthcheck.sh --connect"
       start_period: 1m
       interval: 30s
       timeout: 10s
