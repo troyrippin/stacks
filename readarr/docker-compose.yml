@@ -1,0 +1,26 @@
+---
+version: "3.8"
+
+services:
+  readarr:
+    image: linuxserver/readarr:nightly
+    container_name: readarr
+    hostname: readarr
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 8787:8787
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/readarr/config:/config
+      - /share/CACHEDEV1_DATA/data/:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
