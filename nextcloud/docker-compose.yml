@@ -2,10 +2,10 @@
 version: "3.8"
 
 services:
-  nextcloud_mariadb:
-    image: mariadb:latest
-    container_name: nextcloud_mariadb
-    hostname: nextcloud_mariadb
+  nextcloud_postgres:
+    image: postgres:latest
+    container_name: nextcloud_postgres
+    hostname: nextcloud_postgres
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -13,18 +13,18 @@ services:
       - .env
     environment:
       - TZ=${TZ}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGUSER=${PGUSER}
     healthcheck:
-      test: "healthcheck.sh --connect"
-      start_period: 1m
-      interval: 30s
+      test: ["CMD-SHELL", "pg_isready -d nextclouddb -U nextclouduser"]
+      start_period: 30s
+      interval: 10s
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/nextcloud/database:/var/lib/mysql
+      - /share/CACHEDEV1_DATA/Container/nextcloud/database:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy_network
@@ -42,17 +42,17 @@ services:
       - .env
     environment:
       - TZ=${TZ}
-      - MYSQL_HOST=${MYSQL_HOST}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 8080:80
     volumes:
       - /share/CACHEDEV1_DATA/Container/nextcloud/config:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      nextcloud_mariadb:
+      nextcloud_postgres:
         condition: service_healthy
     networks:
       - proxy_network

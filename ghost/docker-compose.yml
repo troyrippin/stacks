@@ -17,8 +17,8 @@ services:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/ghost_admin_password
     healthcheck:
       test: "healthcheck.sh --connect"
-      start_period: 1m
-      interval: 30s
+      start_period: 30s
+      interval: 10s
       timeout: 10s
       retries: 5
     volumes:
