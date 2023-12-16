@@ -27,7 +27,7 @@ services:
       - /share/CACHEDEV1_DATA/Container/nextcloud/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
-      - nextcloud_network
+      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -55,11 +55,11 @@ services:
       nextcloud_mariadb:
         condition: service_healthy
     networks:
-      - nextcloud_network
+      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
 networks:
-  nextcloud_network:
-    name: nextcloud_network
+  proxy_network:
+    name: proxy_network
     external: true

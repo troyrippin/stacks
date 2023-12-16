@@ -2,10 +2,10 @@
 version: "3.8"
 
 services:
-  photoprism-mariadb:
+  photoprism_mariadb:
     image: mariadb:latest
-    container_name: photoprism-mariadb
-    hostname: photoprism-mariadb
+    container_name: photoprism_mariadb
+    hostname: photoprism_mariadb
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -59,7 +59,7 @@ services:
       - /share/data/media/photos:/photoprism/originals
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      photoprism-mariadb:
+      photoprism_mariadb:
         condition: service_healthy
     networks:
       - proxy_network

@@ -13,7 +13,9 @@ services:
       - .env
     environment:
       - TZ=${TZ}
+      # - PMA_ARBITRARY=1
       - PMA_HOST=${PMA_HOST}
+      # - PMA_HOSTS=${PMA_HOSTS}
       - PMA_PORT=${PMA_PORT}
     ports:
       - 8182:80
