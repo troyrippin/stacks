@@ -14,6 +14,7 @@ services:
     environment:
       - TZ=${TZ}
       # - PMA_ARBITRARY=1
+      - PMA_ABSOLUTE_URI=${PMA_ABSOLUTE_URI}
       - PMA_HOST=${PMA_HOST}
       # - PMA_HOSTS=${PMA_HOSTS}
       - PMA_PORT=${PMA_PORT}
@@ -22,6 +23,7 @@ services:
     volumes:
       - /share/CACHEDEV1_DATA/Container/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
       - /share/CACHEDEV1_DATA/Container/phpmyadmin/sessions:/sessions
+      - /share/CACHEDEV1_DATA/Container/phpmyadmin/themes/boodark-teal:/var/www/html/themes/boodark-teal/
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy_network
