@@ -9,15 +9,20 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    user: 1000:1000
+    user: 0:0
     env_file:
       - .env
     environment:
       - TZ=${TZ}
+      - GF_INSTALL_PLUGINS=${GF_INSTALL_PLUGINS}
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=${GF_USERS_ALLOW_SIGN_UP}
     ports:
       - 3000:3000
     volumes:
-      - /share/CACHEDEV1_DATA/Container/grafana/config:/var/lib/grafana
+      - /share/CACHEDEV1_DATA/Container/grafana/data:/var/lib/grafana
+      - /share/CACHEDEV1_DATA/Container/grafana/provisioning:/etc/grafana/provisioning
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy_network
