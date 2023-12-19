@@ -1,0 +1,27 @@
+---
+version: "3.8"
+
+services:
+  pingvin-share:
+    image: stonith404/pingvin-share:latest
+    container_name: pingvin-share
+    hostname: pingvin-share
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 3123:3000
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/pingvin-share/data:/opt/app/backend/data
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  proxy_network:
+    name: proxy_network
+    external: true
