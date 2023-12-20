@@ -7,6 +7,7 @@ services:
     container_name: grafana
     hostname: grafana
     restart: unless-stopped
+    network_mode: host
     security_opt:
       - no-new-privileges:true
     user: 0:0
@@ -21,15 +22,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /share/CACHEDEV1_DATA/Container/grafana/data:/var/lib/grafana
-      - /share/CACHEDEV1_DATA/Container/grafana/provisioning:/etc/grafana/provisioning
+      - /opt/grafana/data:/var/lib/grafana
+      - /opt/grafana/provisioning:/etc/grafana/provisioning
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-networks:
-  proxy_network:
-    name: proxy_network
-    external: true

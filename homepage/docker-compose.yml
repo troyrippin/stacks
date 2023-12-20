@@ -10,14 +10,11 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PORT=${PORT}
+      - TZ=Europe/Stockholm
+      - PORT=8500
     volumes:
-      - /share/CACHEDEV1_DATA/Container/homepage/config:/config
-      - /share/CACHEDEV1_DATA/Container/homepage/icons:/app/public/icons
+      - /opt/homepage/config:/config
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     labels:

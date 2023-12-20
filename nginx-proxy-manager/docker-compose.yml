@@ -9,18 +9,16 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - DB_SQLITE_FILE=${DB_SQLITE_FILE}
+      - TZ=Europe/Stockholm
+      - DB_SQLITE_FILE=/data/database.sqlite
     ports:
-      - 4480:80
-      - 4443:443
-      - 4481:81
+      - 80:80
+      - 81:81
+      - 443:443
     volumes:
-      - /share/CACHEDEV1_DATA/Container/nginx-proxy-manager/config/data:/data
-      - /share/CACHEDEV1_DATA/Container/nginx-proxy-manager/config/letsencrypt:/etc/letsencrypt
+      - /opt/nginx-proxy-manager/config/data:/data
+      - /opt/nginx-proxy-manager/config/letsencrypt:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy_network

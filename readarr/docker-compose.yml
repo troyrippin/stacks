@@ -10,17 +10,15 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 8787:8787
     volumes:
-      - /share/CACHEDEV1_DATA/Container/readarr/config:/config
-      - /share/CACHEDEV1_DATA/data/:/data
+      - /opt/readarr/config:/config
+      - /data/:/data
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

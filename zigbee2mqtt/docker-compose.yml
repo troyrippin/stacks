@@ -15,7 +15,7 @@ services:
     ports:
       - 9110:8080
     volumes:
-      - /share/CACHEDEV1_DATA/Container/zigbee2mqtt/config:/app/data
+      - /opt/zigbee2mqtt/config:/app/data
       - /run/udev:/run/udev:ro
       - /etc/localtime:/etc/localtime:ro
     devices:

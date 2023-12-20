@@ -7,25 +7,17 @@ services:
     container_name: filebrowser
     hostname: filebrowser
     restart: unless-stopped
+    network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - FB_PORT=${FB_PORT}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - FB_PORT=6060
     volumes:
       - /:/data
-      - /share/CACHEDEV1_DATA/Container/filebrowser/config:/config
+      - /opt/filebrowser/config:/config
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-networks:
-  proxy_network:
-    name: proxy_network
-    external: true

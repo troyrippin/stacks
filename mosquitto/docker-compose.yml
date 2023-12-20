@@ -10,17 +10,15 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     ports:
       - 1883:1883
       - 9001:9001
     volumes:
-      - /share/CACHEDEV1_DATA/Container/mosquitto/config:/mosquitto/config
-      - /share/CACHEDEV1_DATA/Container/mosquitto/data:/mosquitto/data
-      - /share/CACHEDEV1_DATA/Container/mosquitto/log:/mosquitto/log
+      - /opt/mosquitto/config:/mosquitto/config
+      - /opt/mosquitto/data:/mosquitto/data
+      - /opt/mosquitto/log:/mosquitto/log
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

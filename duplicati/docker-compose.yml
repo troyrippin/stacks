@@ -10,18 +10,16 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 8200:8200
     volumes:
-      - /share/CACHEDEV1_DATA/Container/duplicati/backups:/backups
-      - /share/CACHEDEV1_DATA/Container/duplicati/config:/config
-      - /share/CACHEDEV1_DATA/Container:/source
+      - /opt/duplicati/backups:/backups
+      - /opt/duplicati/config:/config
+      - /opt:/source
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

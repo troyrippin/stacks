@@ -10,17 +10,14 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 8443:8443
     volumes:
-      - /share/CACHEDEV1_DATA/Container/home-assistant/config:/config
-      - /share/CACHEDEV1_DATA/data/media/music:/media
+      - /opt/home-assistant/config:/config
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

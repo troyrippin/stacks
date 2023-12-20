@@ -7,25 +7,17 @@ services:
     container_name: overseerr
     hostname: overseerr
     restart: unless-stopped
+    network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 5055:5055
     volumes:
-      - /share/CACHEDEV1_DATA/Container/overseerr/config:/config
+      - /opt/overseerr/config:/config
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-networks:
-  proxy_network:
-    name: proxy_network
-    external: true

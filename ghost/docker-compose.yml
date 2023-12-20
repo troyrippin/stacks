@@ -22,7 +22,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/ghost/database:/var/lib/mysql
+      - /opt/ghost/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     secrets:
       - ghost_admin_password
@@ -30,7 +30,7 @@ services:
       - ghost_user
       - ghost_db
     networks:
-      - proxy_network
+      - ghost_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -54,13 +54,13 @@ services:
     ports:
       - 2368:2368
     volumes:
-      - /share/CACHEDEV1_DATA/Container/ghost/config:/var/lib/ghost/content
+      - /opt/ghost/config:/var/lib/ghost/content
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       ghost_mariadb:
         condition: service_healthy
     networks:
-      - proxy_network
+      - ghost_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -75,6 +75,6 @@ secrets:
      file: .secrets/ghost_db.txt
 
 networks:
-  proxy_network:
-    name: proxy_network
+  ghost_network:
+    name: ghost_network
     external: true

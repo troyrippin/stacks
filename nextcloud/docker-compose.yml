@@ -24,10 +24,10 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/nextcloud/database:/var/lib/postgresql/data
+      - /opt/nextcloud/database:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     networks:
-      - proxy_network
+      - nextcloud_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -49,17 +49,17 @@ services:
     ports:
       - 8080:80
     volumes:
-      - /share/CACHEDEV1_DATA/Container/nextcloud/config:/var/www/html
+      - /opt/nextcloud/config:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       nextcloud_postgres:
         condition: service_healthy
     networks:
-      - proxy_network
+      - nextcloud_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
 networks:
-  proxy_network:
-    name: proxy_network
+  nextcloud_network:
+    name: nextcloud_network
     external: true

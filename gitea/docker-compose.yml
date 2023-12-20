@@ -24,7 +24,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/gitea/database:/var/lib/postgresql/data
+      - /opt/gitea/database:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy_network
@@ -53,7 +53,7 @@ services:
       - 3000:3000
       - 222:22
     volumes:
-      - /share/CACHEDEV1_DATA/Container/gitea/config:/data
+      - /opt/gitea/config:/data
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       gitea_postgres:

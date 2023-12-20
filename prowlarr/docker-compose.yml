@@ -10,16 +10,14 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 9696:9696
     volumes:
-      - /share/CACHEDEV1_DATA/Container/prowlarr/config:/config
+      - /opt/prowlarr/config:/config
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

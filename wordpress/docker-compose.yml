@@ -24,10 +24,10 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/wordpress/database:/var/lib/mysql
+      - /opt/wordpress/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
-      - proxy_network
+      - wordpress_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -49,17 +49,17 @@ services:
     ports:
       - 8000:80
     volumes:
-      - /share/CACHEDEV1_DATA/Container/wordpress/config:/var/www/html
+      - /opt/wordpress/config:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       wordpress_mysql:
         condition: service_healthy
     networks:
-      - proxy_network
+      - wordpress_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
 networks:
-  proxy_network:
-    name: proxy_network
+  wordpress_network:
+    name: wordpress_network
     external: true

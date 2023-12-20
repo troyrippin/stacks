@@ -10,17 +10,15 @@ services:
     network_mode: host
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
       - 8086:8086
     volumes:
-      - /share/CACHEDEV1_DATA/Container/influxdb/config:/etc/influxdb2
-      - /share/CACHEDEV1_DATA/Container/influxdb/data:/var/lib/influxdb2
+      - /opt/influxdb/config:/etc/influxdb2
+      - /opt/influxdb/data:/var/lib/influxdb2
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

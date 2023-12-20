@@ -7,6 +7,7 @@ services:
     container_name: prometheus
     hostname: prometheus
     restart: unless-stopped
+    network_mode: host
     security_opt:
       - no-new-privileges:true
     environment:
@@ -15,12 +16,10 @@ services:
       - 9090:9090
     command: "--config.file=/etc/prometheus/prometheus.yml"
     volumes:
-      - /share/CACHEDEV1_DATA/Container/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /share/CACHEDEV1_DATA/Container/prometheus/config/alert_rules.yml:/etc/prometheus/alert_rules.yml
-      - /share/CACHEDEV1_DATA/Container/prometheus:/prometheus
+      - /opt/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /opt/prometheus/config/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - /opt/prometheus:/prometheus
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
@@ -29,6 +28,7 @@ services:
     container_name: cadvisor
     hostname: cadvisor
     restart: unless-stopped
+    network_mode: host
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -38,12 +38,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
     devices:
       - /dev/kmsg
-    networks:
-      - proxy_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-networks:
-  proxy_network:
-    name: proxy_network
-    external: true
