@@ -15,8 +15,7 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-    ports:
-      - 6060:8080
+      - FB_PORT=${FB_PORT}
     volumes:
       - /:/data
       - /share/CACHEDEV1_DATA/Container/filebrowser/config:/config
