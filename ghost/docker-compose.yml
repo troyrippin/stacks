@@ -21,6 +21,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+    ports:
+      - 3306:3306
     volumes:
       - /opt/ghost/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro

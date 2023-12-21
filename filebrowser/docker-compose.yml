@@ -16,8 +16,8 @@ services:
       - PGID=1000
       - FB_PORT=6060
     volumes:
-      - /:/data
       - /opt/filebrowser/config:/config
+      - /:/data
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

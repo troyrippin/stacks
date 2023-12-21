@@ -23,6 +23,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+    ports:
+      - 5432:5432
     volumes:
       - /opt/gitea/database:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
