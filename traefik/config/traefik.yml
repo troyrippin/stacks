@@ -1,6 +1,6 @@
 global:
   checkNewVersion: true
-  sendAnonymousUsage: true
+  sendAnonymousUsage: false
 
 api:
   dashboard: true
@@ -8,6 +8,12 @@ api:
 
 log:
   level: INFO
+  format: json
+  filePath: /var/log/traefik/traefik.log
+
+accesslog:
+  format: json
+  filePath: /var/log/traefik/access.log
 
 entryPoints:
   http:
