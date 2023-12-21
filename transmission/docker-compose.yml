@@ -21,7 +21,7 @@ services:
     volumes:
       - /opt/transmission/config:/config
       - /opt/transmission/config:/watch
-      - /data/torrents:/data/torrents/      
+      - /data/torrents:/data/torrents/
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true
