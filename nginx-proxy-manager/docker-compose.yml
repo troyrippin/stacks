@@ -21,11 +21,11 @@ services:
       - /opt/nginx-proxy-manager/config/letsencrypt:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
     networks:
-      - proxy_network
+      - web
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
 networks:
-  proxy_network:
-    name: proxy_network
+  web:
+    name: web
     external: true

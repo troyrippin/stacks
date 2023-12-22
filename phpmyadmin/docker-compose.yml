@@ -15,7 +15,7 @@ services:
       - PMA_HOST=
       - PMA_PORT=3306
     ports:
-      - 80:80
+      - 8123:80
     volumes:
       - /opt/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
       - /opt/phpmyadmin/sessions:/sessions

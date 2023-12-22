@@ -1,1 +1,1 @@
-This stacks repository is my personal template collection. Here you'll find docker compose files for various tools, and technologies.
+This repository is my personal Docker Compose template collection. Here you'll find compose files for various tools, and technologies.
