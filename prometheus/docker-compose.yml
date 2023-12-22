@@ -14,29 +14,8 @@ services:
       - TZ=Europe/Stockholm
     ports:
       - 9090:9090
-    command: "--config.file=/etc/prometheus/prometheus.yml"
     volumes:
       - /opt/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /opt/prometheus/config/alert_rules.yml:/etc/prometheus/alert_rules.yml
-      - /opt/prometheus:/prometheus
       - /etc/localtime:/etc/localtime:ro
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-
-  cadvisor:
-    image: google/cadvisor:latest
-    container_name: cadvisor
-    hostname: cadvisor
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk/:ro
-      - /etc/localtime:/etc/localtime:ro
-    devices:
-      - /dev/kmsg
     labels:
       - com.centurylinklabs.watchtower.enable=true
