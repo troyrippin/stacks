@@ -15,6 +15,7 @@ services:
     ports:
       - 8086:8086
     volumes:
+      - /opt/influxdb/config:/etc/influxdb2
       - /opt/influxdb/data:/var/lib/influxdb2
       - /etc/localtime:/etc/localtime:ro
     labels:

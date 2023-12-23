@@ -17,5 +17,7 @@ services:
       - 3000:3000
     volumes:
       - /opt/grafana/data:/var/lib/grafana
+      - /opt/grafana/provisioning:/etc/grafana/provisioning
+      - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true

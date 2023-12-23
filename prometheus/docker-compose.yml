@@ -16,6 +16,8 @@ services:
       - 9090:9090
     volumes:
       - /opt/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /opt/prometheus/config/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - /opt/prometheus:/prometheus
       - /etc/localtime:/etc/localtime:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true
