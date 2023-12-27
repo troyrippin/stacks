@@ -1,0 +1,24 @@
+---
+version: "3.8"
+
+services:
+  rclone:
+    image: rclone/rclone:latest
+    container_name: rclone
+    hostname: rclone
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 5572:5572
+    command: rcd --rc-web-gui --rc-addr 0.0.0.0:5572 --rc-web-fetch-url=https://api.github.com/repos/rclone/rclone-webui-react/releases/latest --rc-web-gui-update --rc-user user --rc-pass password -vv --checksum --transfers=4 --checkers=4 --contimeout=60s --timeout=300s --retries=3 --low-level-retries=10 --stats=1s --stats-file-name-length=0
+    volumes:
+      - /opt/rclone/config:/config/rclone
+      - /opt/rclone/dashboard/sync_script:/sync_script
+      - /opt:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
