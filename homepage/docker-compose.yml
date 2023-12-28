@@ -15,6 +15,7 @@ services:
       - PORT=8500
     volumes:
       - /opt/homepage/config:/config
+      - /opt/homepage/icons:/app/public/icons
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     labels:

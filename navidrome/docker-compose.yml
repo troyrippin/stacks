@@ -1,0 +1,25 @@
+---
+version: "3.8"
+
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    hostname: navidrome
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 1000:1000
+    environment:
+      - TZ=Europe/Stockholm
+      - ND_SCANSCHEDULE=1h
+      - ND_LOGLEVEL=info  
+      - ND_SESSIONTIMEOUT=24h
+    ports:
+      - 4533:4533
+    volumes:
+      - /opt/navidrom/config:/data
+      - /data/media/music:/music:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
