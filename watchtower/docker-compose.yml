@@ -7,20 +7,29 @@ services:
     container_name: watchtower
     hostname: watchtower
     restart: unless-stopped
-    network_mode: host
     security_opt:
       - no-new-privileges:true
     env_file:
       - .env
     environment:
       - TZ=${TZ}
-      - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
       - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
+      - WATCHTOWER_HTTP_API_METRICS=${WATCHTOWER_HTTP_API_METRICS}
+      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_HTTP_API_TOKEN}
       - WATCHTOWER_INCLUDE_RESTARTING=${WATCHTOWER_INCLUDE_RESTARTING}
       - WATCHTOWER_INCLUDE_STOPPED=${WATCHTOWER_INCLUDE_STOPPED}
       - WATCHTOWER_LABEL_ENABLE=${WATCHTOWER_LABEL_ENABLE}
+      - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
+    ports:
+      - 8800:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - watchtower
     labels:
       - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  watchtower:
+    external: true
