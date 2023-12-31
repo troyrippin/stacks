@@ -1,0 +1,28 @@
+---
+version: "3.8"
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 8096:8096
+    volumes:
+      - /opt/jellyfin/config:/config
+      - /opt/jellyfin/cache:/cache
+      - /data/media/movies:/movies:ro
+      - /data/media/tv:/tv:ro
+      - /data/media/audiobooks:/audiobooks:ro
+      - /data/media/music:/music:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
