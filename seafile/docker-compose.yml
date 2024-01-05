@@ -23,7 +23,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /share/CACHEDEV1_DATA/Container/seafile/database:/var/lib/mysql
+      - /opt/seafile/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
       - seafile_net
@@ -63,7 +63,7 @@ services:
     ports:
       - 8844:80
     volumes:
-      - /share/CACHEDEV1_DATA/Container/seafile/config:/shared
+      - /opt/seafile/config:/shared
     depends_on:
       seafile_mariadb:
         condition: service_healthy
