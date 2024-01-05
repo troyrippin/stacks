@@ -1,0 +1,79 @@
+---
+version: "3.8"
+
+services:
+  seafile_mariadb:
+    image: mariadb:latest
+    container_name: seafile_mariadb
+    hostname: seafile_mariadb
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - MARIADB_AUTO_UPGRADE=${MARIADB_AUTO_UPGRADE}
+      - MYSQL_LOG_CONSOLE=${MYSQL_LOG_CONSOLE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: "healthcheck.sh --connect"
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/seafile/database:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - seafile_net
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  seafile_memcached:
+    image: memcached:latest
+    container_name: seafile_memcached
+    hostname: seafile_memcached
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    entrypoint: memcached -m 256
+    networks:
+      - seafile_net
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  seafile:
+    image: seafileltd/seafile-mc:latest
+    container_name: seafile
+    hostname: seafile
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - DB_HOST=${DB_HOST}
+      - DB_ROOT_PASSWD=${DB_ROOT_PASSWD}
+      - SEAFILE_ADMIN_EMAIL=${SEAFILE_ADMIN_EMAIL}
+      - SEAFILE_ADMIN_PASSWORD=${SEAFILE_ADMIN_PASSWORD}
+      - SEAFILE_SERVER_LETSENCRYPT=${SEAFILE_SERVER_LETSENCRYPT}
+      - SEAFILE_SERVER_HOSTNAME=${SEAFILE_SERVER_HOSTNAME}
+    ports:
+      - 8844:80
+    volumes:
+      - /share/CACHEDEV1_DATA/Container/seafile/config:/shared
+    depends_on:
+      seafile_mariadb:
+        condition: service_healthy
+      seafile_memcached:
+        condition: service_started
+    networks:
+      - seafile_net
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  seafile_net:
+    external: true
