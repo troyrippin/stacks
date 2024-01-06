@@ -10,11 +10,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=Europe/Stockholm
-      - MYSQL_DATABASE_FILE=/run/secrets/ghost_db
-      - MYSQL_USER_FILE=/run/secrets/ghost_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/ghost_password
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/ghost_admin_password
+      - TZ=${TZ}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: "healthcheck.sh --connect"
       start_period: 30s
@@ -26,11 +26,6 @@ services:
     volumes:
       - /opt/ghost/database:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
-    secrets:
-      - ghost_admin_password
-      - ghost_password
-      - ghost_user
-      - ghost_db
     networks:
       - ghost_network
     labels:
@@ -65,16 +60,6 @@ services:
       - ghost_network
     labels:
       - com.centurylinklabs.watchtower.enable=true
-
-secrets:
-  ghost_admin_password:
-     file: .secrets/ghost_admin_password.txt
-  ghost_password:
-     file: .secrets/ghost_password.txt
-  ghost_user:
-     file: .secrets/ghost_user.txt
-  ghost_db:
-     file: .secrets/ghost_db.txt
 
 networks:
   ghost_network:
