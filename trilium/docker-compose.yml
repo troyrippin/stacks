@@ -12,8 +12,8 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-      - PUID=1000
-      - PGID=1000
+      - USER_UID=1000
+      - USER_GID=1000
       - TRILIUM_DATA_DIR=/home/node/trilium-data
     ports:
       - 3388:8080
