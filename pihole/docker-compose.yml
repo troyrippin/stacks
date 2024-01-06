@@ -1,0 +1,48 @@
+---
+version: "3.8"
+
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: pihole
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - WEBPASSWORD=******
+      - DNSMASQ_LISTENING=all
+      #- VIRTUAL_HOST=pihole.mydomain.com
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 8080:80/tcp
+    volumes:
+      - /opt/pihole/config:/etc/pihole
+      - /opt/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - pihole_network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - traefik.enable=true
+      - traefik.http.routers.pihole.entrypoints=http
+      - traefik.http.routers.pihole.rule=Host(`pihole.mydomain.com`)
+      - traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.pihole.middlewares=pihole-https-redirect
+      - traefik.http.routers.pihole-secure.entrypoints=https
+      - traefik.http.routers.pihole-secure.rule=Host(`pihole.mydomain.com`)
+      - traefik.http.routers.pihole-secure.tls=true
+      - traefik.http.routers.pihole-secure.service=pihole
+      - traefik.http.services.pihole.loadbalancer.server.port=80
+      - traefik.docker.network=pihole_network
+
+networks:
+  pihole_network:
+    external: true
+
+# For Debian/Fedora Linux port 53 issue
+# sudo sed -r -i.orig 's/#?DNSStubListener=yes/DNSStubListener=no/g' /etc/systemd/resolved.conf
+# sudo sh -c 'rm /etc/resolv.conf && ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf'
+# systemctl restart systemd-resolved
