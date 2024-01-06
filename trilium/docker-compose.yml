@@ -1,0 +1,24 @@
+---
+version: "3.8"
+
+services:
+  trilium:
+    image: zadam/trilium:latest
+    container_name: trilium
+    hostname: trilium
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - TRILIUM_DATA_DIR=/home/node/trilium-data
+    ports:
+      - 3388:8080
+    volumes:
+      - /opt/trilium:/home/node/trilium-data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
