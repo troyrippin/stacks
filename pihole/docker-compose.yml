@@ -42,7 +42,7 @@ networks:
   pihole_network:
     external: true
 
-# For Debian/Fedora Linux port 53 issue
+# For Ubunutu/Fedora Linux port 53 issue
 # sudo sed -r -i.orig 's/#?DNSStubListener=yes/DNSStubListener=no/g' /etc/systemd/resolved.conf
 # sudo sh -c 'rm /etc/resolv.conf && ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf'
 # systemctl restart systemd-resolved
